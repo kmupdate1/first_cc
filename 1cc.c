@@ -106,7 +106,7 @@ Token *tokenize(char *p) {
 	}
 
 	new_token(TK_EOF, cur, p);
-	return head,next;
+	return head.next;
 }
 
 int main(int argc, char **argv) {
@@ -125,18 +125,17 @@ int main(int argc, char **argv) {
 
 	// 式の最初は数でなければならないので，それをチェック
 	// 最初のmov命令を出力
-	printf("	mov rax, %ld\n", expect_number());
+	printf("	mov rax, %d\n", expect_number());
 
 	// '+<数>'または'-<数>'という形の項のうち，各型ごとのトークンを消費しつつアセンブリを出力
 	while (!at_eof()) {
 		if (consume('+')) {
-			p++;
-			printf("	add rax, %ld\n", expect_number());
+			printf("	add rax, %d\n", expect_number());
 			continue;
 		}
 
-		expect('-')
-			printf("	sub rax, %ld\n", expect_number());
+		expect('-');
+		printf("	sub rax, %d\n", expect_number());
 	}
 
 	printf("	ret\n");
