@@ -38,7 +38,7 @@ void error(char *fmt, ...) {
 // 次のトークンが期待している記号のときには，トークンを１つ読み進めて，真をかえす．
 // それ以外の場合には偽を返す．
 bool consume(char op) {
-	if (token -> kind != TK_RESERVED || token -> str[0] != op) {
+	if ( (token -> kind != TK_RESERVED) || (token -> str[0] != op) ) {
 		return false;
 	}
 	token = token -> next;
@@ -48,7 +48,7 @@ bool consume(char op) {
 // 次のトークンが期待している記号のときには，トークンを１つ読み進める．
 // それ以外の場合にはエラーを報告する．
 void expect(char op) {
-	if (token -> kind != TK_RESERVED || token -> str[0] != op) {
+	if ( (token -> kind != TK_RESERVED) || (token -> str[0] != op) ) {
 		error("'%c'ではありません．", op);
 	}
 	token = token -> next;
@@ -57,7 +57,7 @@ void expect(char op) {
 // 次のトークンが数値の場合，トークンを１つ読み進めてその数値を返す．
 // それ以外の場合にはエラーを報告する．
 int expect_number() {
-	if (token -> kind != TK_NUM) {
+	if ( token -> kind != TK_NUM ) {
 		error("数字ではありません．");
 	}
 	int val = token -> val;
@@ -85,19 +85,19 @@ Token *tokenize(char *p) {
 	head.next = NULL;
 	Token *cur = &head;
 
-	while (*p) {
+	while ( *p ) {
 		// 空白文字をスキップ
-		if (isspace(*p)) {
+		if ( isspace(*p) ) {
 			p++;
 			continue;
 		}
 
-		if (*p == '+' || *p == '-') {
+		if ( *p == '+' || *p == '-' ) {
 			cur = new_token(TK_RESERVED, cur, p++);
 			continue;
 		}
 
-		if (isdigit(*p)) {
+		if ( isdigit(*p) ) {
 			cur = new_token(TK_NUM, cur, p);
 			cur -> val = strtol(p, &p, 10);
 			continue;
@@ -126,19 +126,19 @@ int main(int argc, char **argv) {
 
 	// 式の最初は数でなければならないので，それをチェック
 	// 最初のmov命令を出力
-	printf("	mov rax, %d\n", expect_number());
+	printf(" mov rax, %d\n", expect_number());
 
 	// '+<数>'または'-<数>'という形の項のうち，各型ごとのトークンを消費しつつアセンブリを出力
-	while (!at_eof()) {
-		if (consume('+')) {
-			printf("	add rax, %d\n", expect_number());
+	while ( !at_eof() ) {
+		if ( consume('+') ) {
+			printf(" add rax, %d\n", expect_number());
 			continue;
 		}
 
 		expect('-');
-		printf("	sub rax, %d\n", expect_number());
+		printf(" sub rax, %d\n", expect_number());
 	}
 
-	printf("	ret\n");
+	printf(" ret\n");
 	return 0;
 }
