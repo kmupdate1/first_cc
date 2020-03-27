@@ -94,6 +94,7 @@ Token *tokenize(char *p) {
 
 		if (*p == '+' || *p == '-') {
 			cur = new_token(TK_RESERVED, cur, p++);
+			continue;
 		}
 
 		if (isdigit(*p)) {
@@ -111,7 +112,7 @@ Token *tokenize(char *p) {
 
 int main(int argc, char **argv) {
 	if ( argc != 2 ) {
-		error("引数の個数が正しくありません\n");
+		error("引数の個数が正しくありません．\n");
 		return 1;
 	}
 
