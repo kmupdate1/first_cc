@@ -6,8 +6,7 @@ echo
 
 echo 入力してください．
 read variable
-echo $variable
-echo
+echo 
 
 ./1cc $variable > tmp.s
 echo アセンブリを生成しました．

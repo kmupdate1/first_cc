@@ -22,6 +22,9 @@ struct Token {
 	char *str;      // トークン文字列
 };
 
+// 入力プログラム
+char *user_input;
+
 // 現在着目しているトークン
 Token *token;
 
@@ -30,6 +33,20 @@ Token *token;
 void error(char *fmt, ...) {
 	va_list ap;
 	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	fprintf(stderr, "\n");
+	exit(1);
+}
+
+// エラーの箇所を特定して表示する関数
+void error_at(char *loc, char *fmt, ...) {
+	va_list ap;
+	va_start(ap, fmt);
+
+	int pos = loc - user_input;
+	fprintf(stderr, "%s\n", user_input);
+	fprintf(stderr, "%*s", pos, "");
+	fprintf(stderr, "^ ");
 	vfprintf(stderr, fmt, ap);
 	fprintf(stderr, "\n");
 	exit(1);
@@ -58,7 +75,7 @@ void expect(char op) {
 // それ以外の場合にはエラーを報告する．
 int expect_number() {
 	if ( token -> kind != TK_NUM ) {
-		error("数字ではありません．");
+		error_at(token -> str, "数字ではありません．");
 	}
 	int val = token -> val;
 	token = token -> next;
@@ -115,6 +132,9 @@ int main(int argc, char **argv) {
 		error("引数の個数が正しくありません．\n");
 		return 1;
 	}
+
+	// 入力文字列をグローバル変数にアサイン
+	user_input = argv[1];
 
 	// トークナイズする関数
 	token = tokenize(argv[1]);
