@@ -1,12 +1,11 @@
 CFLAGS=-std=c11 -g -static
 
-1cc: 1cc.c
+kccObj: kcc.c
 
-test: 1cc
-	./test.sh
+test: kccObj
+	./kcc.sh
 
 clean:
-	rm -f 1cc *.o *~ tmp*
+	rm -f kccObj *.o *~ tmp*
 
 .PHONY: test clean
-

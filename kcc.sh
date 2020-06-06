@@ -11,17 +11,17 @@ assert() {
 	actual="$?"
 
 	if [ "$actual" = "$expected" ]; then
-		echo "$input => $actual"
+		echo "$input => $actual OK!"
 	else
 		echo "$input => $expected expected, but got $actual"
-		exit 1
 	fi
 }
 
+echo "usage : <input stream> => <expected results>"
+
 assert 0 0
 assert 42 42
-
-echo OK
+assert 7 "12-8+3"
 
 rm object
 rm object.s
