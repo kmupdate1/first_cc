@@ -1,5 +1,46 @@
+#include <ctype.h>
+#include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+// トークンの種類
+typedef enum
+{
+	TK_RESERVED, // 記号
+	TK_NUM,      // 整数トークン
+	TK_EOF,      // 入力の終わりを表すトークン
+} TokenKind; // TokenKindとしてenum型の定数集合を定義
+
+typedef struct Token Token; // 下記の構造体をTokenとして定義
+
+struct Token //Token型の構造体を定義
+{
+	TokenKind kind; // トークンの型
+	Token *next;    // 次の入力トークン
+	int val;        // kindがTK_NUMの場合，その数値
+	char *str;      // トークン文字列
+};
+
+// 現在着目しているトークン
+Token *token; // 再定義したToken構造体のポインタ変数tokenを定義
+
+void error(char *fmt, ...)
+{
+	va_list ap;
+	va_start(ap, fmt);
+	fprintf(stderr, fmt, ap);
+	exit(1);
+}
+
+bool consume(char op)
+{
+	if ( token -> kind != TK_RESERVED || token -> str[0] != op )
+		return false;
+	token = token -> next;
+	return true;
+}
 
 int main(int argc, char **argv)
 {
