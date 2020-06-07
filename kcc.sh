@@ -22,6 +22,7 @@ echo "usage : <input stream> => <expected results>"
 assert 0 0
 assert 42 42
 assert 7 "12-8+3"
+assert 7 "12 - 8 + 3"
 
 rm object
 rm object.s
